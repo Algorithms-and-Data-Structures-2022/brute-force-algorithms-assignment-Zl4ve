@@ -32,13 +32,13 @@ namespace assignment {
     }
 
     // Ограничение 1: текущая сумма должна быть меньше целевой
-    if (true /* ... */) {
+    if (sum > target_sum) {
       // если превысили целевую сумму, то сделать ее меньше уже не получится (все элементы множества положительные)
       return;
     }
 
     // Ограничение 2: "остаточная сумма" + "текущая сумма" должны быть больше или равны "целевой сумме"
-    if (true /* ... */) {
+    if (residual + sum < target_sum) {
       // сумму невозможно будет набрать с оставшимися элементами множества
       return;
     }
@@ -47,6 +47,8 @@ namespace assignment {
     if (sum == target_sum) {
       // ... сохранение в результат
       // ... нужно ли в этой ветке рекурсии рассматривать следующие элементы?
+      indices.push_back(mask2indices(set,mask));
+      return;
     }
 
     // рассматриваем следующий элемент
@@ -56,6 +58,9 @@ namespace assignment {
     residual -= set[index];
 
     // рекурсивный вызов со включением/исключением элемента с текущим индексом ...
+    std::vector<int> subset = mask2elems(set, mask);
+    search(set, index, mask, sum, residual, target_sum, indices);
+    search(set, index, set_bit(mask, index), sum + set[index], residual, target_sum, indices);
   }
 
 }  // namespace assignment
